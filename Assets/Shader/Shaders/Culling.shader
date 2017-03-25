@@ -14,59 +14,83 @@
 		//Tags{ "RenderType" = "Transparent" }
 		//Blend SrcAlpha OneMinusSrcAlpha
 
-	Pass
-	{
-		CGPROGRAM
-		#pragma vertex vert
-		#pragma fragment frag
-		#include "UnityCG.cginc"
-		
-		float _Diffuse, _Ambient;
-		float3 _DiffuseDir;
-		sampler2D _DepthTexture;
-
-		// vertex shader output
-		struct v2f
+		Pass
 		{
-			float4 position: SV_POSITION;		// position in clip space 
-			fixed4 color: SV_Target;			// pixel color
-		};
+			CGPROGRAM
+			#pragma vertex vert
+			#pragma fragment frag
+			#include "UnityCG.cginc"
 
-		// vertex shader
-		v2f vert(float4 pos : POSITION,			// position in object space
-			float3 n : NORMAL,					// normal in object space 
-			fixed4 c : COLOR					// vertex color
-		)
-		{
-			v2f o;
-			o.position = UnityObjectToClipPos(pos);
-			float3 wn = UnityObjectToWorldNormal(n);
-			float diffuse = _Diffuse * max(dot(normalize(_DiffuseDir), wn), 0);
-			o.color = c * min(1, diffuse + _Ambient);
-			return o;
-		}
+			// ---------------------- Data structure ---------------------------
+			float _Diffuse, _Ambient;
+			float3 _DiffuseDir;
+			sampler2D _DepthTexture;
 
-		// fragment shader
-		fixed4 frag(v2f i) : SV_Target
-		{
-			// actual depth
-			float depth = i.position.z;
+			struct appdata
+			{
+				float4 vertex : POSITION;			// position in object space
+				float3 normal : NORMAL;				// normal in object space 
+				fixed4 color : COLOR;				// vertex color
+			};
+			
+			struct v2f
+			{
+				float4 vertex: SV_POSITION;			// position in clip space 
+				fixed4 color : SV_Target;			// pixel color
+				float depth : TEXCOORD0;			// depth of pixel
+			};
 
-			// get 2D pixel position in range (0,0) top-left to (1,1) bottom-right
-			float2 pixelPos = i.position.xy / _ScreenParams.xy;
-			//pixelPos.y = 1 - pixelPos.y;
+			// ---------------------- Helper structure ---------------------------
 
-			// depth of scanned mesh (from depth texture)
-			float scannedMeshDepth = tex2D(_DepthTexture, pixelPos).r;
+			// calculates the depth of a vertex
+			float getDepth(appdata v)
+			{
+				float d;
+				COMPUTE_EYEDEPTH(d);
+				return (d - _ProjectionParams.y) / (_ProjectionParams.z - _ProjectionParams.y);
+			}
 
-			// ignore pixel if pixel is behind scanned mesh 
-			clip(scannedMeshDepth - depth - 0.001);
+			// calculates the color based on the normal
+			/*fixed4 getColor(float3 normal) 
+			{
+				float3 wn = UnityObjectToWorldNormal(n);
+				float diffuse = _Diffuse * max(dot(normalize(_DiffuseDir), wn), 0);
+				o.color = c * min(1, diffuse + _Ambient);
+			}*/
 
-			//if (depth - scannedMeshDepth - 0.001 > 0)
-			//	return fixed4(1, 0, 0, 1);
+			// ---------------------- Shader function ---------------------------
+			v2f vert(appdata v)
+			{
+				v2f o;
+				o.vertex = UnityObjectToClipPos(v.vertex);
+				o.depth = getDepth(v);
+				float3 wn = UnityObjectToWorldNormal(v.normal);
+				float diffuse = _Diffuse * max(dot(normalize(_DiffuseDir), wn), 0);
+				o.color = v.color * min(1, diffuse + _Ambient);
+				return o;
+			}
 
-			return i.color;
-		}
+			// fragment shader
+			fixed4 frag(v2f i) : SV_Target 
+			{
+				// actual depth (0 = near, 1 = far)
+				float depth = i.depth;
+
+				// get 2D pixel position in range (0,0) top-left to (1,1) bottom-right
+				float2 pixelPos = i.position.xy / _ScreenParams.xy;
+				pixelPos.y = 1 - pixelPos.y;
+
+				// depth of environment mesh (from depth texture)
+				float envDepth = tex2D(_DepthTexture, pixelPos).r;
+
+				// ignore pixel if pixel is behind the environment mesh
+				//clip(depth - envDepth - 0.001);
+
+				if (envDepth < depth)
+					return fixed4(envDepth, 0, 0, 1);
+				else
+					return i.color;
+			}
 			ENDCG
 		}
 	}

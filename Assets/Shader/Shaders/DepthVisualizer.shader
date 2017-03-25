@@ -20,6 +20,7 @@
 
 			float4 frag(v2f_img IN) : COLOR
 			{
+				IN.uv.y = 1 - IN.uv.y;
 				float d = tex2D(_MyTex, IN.uv).r;
 				return float4(d, d, d, 1);
 			}
