@@ -10,6 +10,6 @@ public class Replacement : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        GetComponent<Camera>().SetReplacementShader(shader, "RenderType");
+        GetComponent<Camera>().SetReplacementShader(shader, "DaluxType");
     }
 }

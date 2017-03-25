@@ -2,7 +2,7 @@
 {
 	SubShader
 	{
-		Tags { "RenderType" = "Transparent" }
+		Tags { "DaluxType" = "EM" }
 
 		Pass
 		{

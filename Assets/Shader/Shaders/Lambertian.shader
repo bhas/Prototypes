@@ -8,7 +8,7 @@
 	}
 	SubShader
 	{
-		//Tags{ "RenderType" = "Transparent" }
+		Tags{ "DaluxType" = "EM" }
 		//Blend SrcAlpha OneMinusSrcAlpha
 
 		Pass
