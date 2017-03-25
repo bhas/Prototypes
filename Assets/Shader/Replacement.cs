@@ -12,10 +12,4 @@ public class Replacement : MonoBehaviour
     {
         GetComponent<Camera>().SetReplacementShader(shader, "RenderType");
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }
