@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class ExplodingBlock : MonoBehaviour
 {
+    public bool rotate = true;
     public GameObject blockPrefab;
     public float explosivePower = 1f;
 
     void Start()
     {
-        GetComponent<Rigidbody>().angularVelocity = Random.onUnitSphere * 2f;
+        if (rotate)
+            GetComponent<Rigidbody>().angularVelocity = Random.onUnitSphere * 2f;
     }
 
     // Update is called once per frame
@@ -21,7 +23,8 @@ public class ExplodingBlock : MonoBehaviour
 
     void OnCollisionEnter(Collision coll)
     {
-        Explode();
+        if (coll.collider.CompareTag("Player"))
+            Explode();
     }
 
     private void Explode()
@@ -48,7 +51,7 @@ public class ExplodingBlock : MonoBehaviour
                     var obj = Instantiate(blockPrefab, transform.parent);
                     obj.transform.rotation = transform.rotation;
                     obj.transform.position = transform.TransformPoint(start + new Vector3(x, y, z) * blockSize);
-                    obj.GetComponent<Rigidbody>().velocity = mainBody.velocity + Random.onUnitSphere * explosivePower;
+                    obj.GetComponent<Rigidbody>().velocity = Random.onUnitSphere * explosivePower;
                     obj.GetComponent<MeshRenderer>().sharedMaterial = GetComponent<MeshRenderer>().sharedMaterial;
                 }
             }
