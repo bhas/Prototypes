@@ -1,27 +1,21 @@
 fileFormatVersion: 2
-guid: 745979a1b8cd2994ba20b774dd19b14b
-timeCreated: 1490739828
+guid: cf8d174f84b41d743873fc32b56fd3ca
+timeCreated: 1492987781
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: Camera
-    100002: Curve
-    100004: Lamp
-    100006: //RootNode
-    400000: Camera
-    400002: Curve
-    400004: Lamp
-    400006: //RootNode
-    2300000: Curve
-    3300000: Curve
-    4300000: Curve
+    100000: //RootNode
+    400000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: Cube
   materials:
-    importMaterials: 0
-    materialName: 0
-    materialSearch: 1
+    importMaterials: 1
+    materialName: 1
+    materialSearch: 0
   animations:
-    legacyGenerateAnimations: 0
+    legacyGenerateAnimations: 4
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
@@ -39,16 +33,16 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     clipAnimations: []
-    isReadable: 1
+    isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 5000000
+    globalScale: 10000
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 0
     swapUVChannels: 0
     generateSecondaryUV: 0
-    useFileUnits: 1
+    useFileUnits: 0
     optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
-using UnityEngine;
+﻿using UnityEditor;
 
 public class FbxImporter : AssetPostprocessor
 {
@@ -12,12 +8,32 @@ public class FbxImporter : AssetPostprocessor
         var name = importer.assetPath.ToLower();
         if (name.Substring(name.Length - 4, 4) == ".fbx")
         {
-            importer.globalScale = 10000 * 500;
-            importer.generateAnimations = ModelImporterGenerateAnimations.None;
-            importer.importMaterials = false;
-            importer.importAnimation = false;
+            // ==============  Model =============
+            // Meshes
+            importer.globalScale = 10000f;
+            importer.useFileUnits = false;
+            importer.meshCompression = ModelImporterMeshCompression.Off;
+            importer.isReadable = false;
+            importer.optimizeMesh = true;
             importer.importBlendShapes = false;
+            importer.addCollider = false;
+            importer.keepQuads = false;
+            importer.weldVertices = true;
+            importer.swapUVChannels = false;
+            importer.generateSecondaryUV = false;
+            // Normals & Tangents
+            importer.importNormals = ModelImporterNormals.Import;
             importer.importTangents = ModelImporterTangents.None;
+            // Materials
+            importer.importMaterials = true;
+            importer.materialName = ModelImporterMaterialName.BasedOnMaterialName;
+            importer.materialSearch = ModelImporterMaterialSearch.Local;
+
+            // ==============  Rig =============
+            importer.animationType = ModelImporterAnimationType.None;
+
+            // ==============  Animations =============
+            importer.importAnimation = false;
         }
     }
 }
