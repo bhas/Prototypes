@@ -10,7 +10,7 @@ public class FbxImporter : AssetPostprocessor
         {
             // ==============  Model =============
             // Meshes
-            importer.globalScale = 10000f;
+            importer.globalScale = 1;
             importer.useFileUnits = false;
             importer.meshCompression = ModelImporterMeshCompression.Off;
             importer.isReadable = false;

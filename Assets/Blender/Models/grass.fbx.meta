@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: cf8d174f84b41d743873fc32b56fd3ca
-timeCreated: 1492987781
+guid: 4773ac204ae00c348ba9ed8848aac8a9
+timeCreated: 1493312811
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -9,7 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Cube
+    4300000: Plane
   materials:
     importMaterials: 1
     materialName: 1
@@ -36,7 +36,7 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 10000
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 0
