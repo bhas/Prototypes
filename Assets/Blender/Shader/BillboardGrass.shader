@@ -41,7 +41,7 @@
 			{
 				// make each animation have a slight semi-random offset
 				float offset = pos.x * 5.93 + pos.z * 85.7;
-				float t = sin(_Time.y + offset); // Time (t/20, t, t*2, t*3)
+				float t = sin(_Time.y * 1.5 + offset); // Time (t/20, t, t*2, t*3)
 				return lerp(-0.01, 0.01, t);
 			}
 
