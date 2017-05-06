@@ -52,15 +52,25 @@ public static class CustomEditorUtils {
             var size = EditorGUILayout.DelayedIntField(new GUIContent("Size"), list.size);
             if (size < 0)
                 size = 0;
-            if (list.size == 0) // old array is empty
-                list.data = new T[size];
-            else
-            {
-                list.rowsCollapsed = ResizeArray(list.rowsCollapsed, size);
-                list.data = ResizeArray(list.data, size);
-            } 
-            list.size = size;
 
+            // check if list size changed
+            if (list.size != size)
+            {
+                // old array is empty
+                if (list.size == 0)
+                {
+                    list.data = new T[size];
+                    list.rowsCollapsed = new bool[size];
+                }   
+                else
+                {
+                    list.rowsCollapsed = ResizeArray(list.rowsCollapsed, size);
+                    list.data = ResizeArray(list.data, size);
+                }
+                list.size = size;
+            }
+            
+            // populate the list
             for (var i = 0; i < list.size; i++)
             {
                 list.rowsCollapsed[i] = EditorGUILayout.Foldout(list.rowsCollapsed[i], "Element " + i);
@@ -74,9 +84,6 @@ public static class CustomEditorUtils {
                     GUILayout.EndHorizontal();
                     
                 }
-
-
-                
             }
 
             GUILayout.EndVertical();

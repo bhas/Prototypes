@@ -1,4 +1,4 @@
-﻿Shader "Blender/BillboardGrass"
+﻿Shader "Isometric/BillboardGrass"
 {
 	Properties
 	{
